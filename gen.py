@@ -1,13 +1,12 @@
 import random
 import operator
 from fractions import Fraction
-from collections import deque
 
 def create_expr(args, oper_set):
     expr = []
-    terms = deque(args)
-    opers = deque([random.choice(oper_set) for _ in range(1, len(args))])
-    term_counter = deque()
+    terms = list(args)
+    opers = [random.choice(oper_set) for _ in range(1, len(args))]
+    term_counter = []
     while terms:
         if len(term_counter) < 2 or random.randint(0, 1):
             expr.append(terms.pop())
@@ -19,7 +18,7 @@ def create_expr(args, oper_set):
     return expr
 
 def calc_expr(expr, oper_set):
-    terms = deque()
+    terms = []
     for elem in expr:
         if elem not in oper_set:
             terms.append(Fraction(int(elem), 1))
