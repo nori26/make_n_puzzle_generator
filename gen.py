@@ -5,30 +5,30 @@ from collections import deque
 
 def create_expr(args, oper_set):
     expr = []
-    nums = deque(args)
+    terms = deque(args)
     opers = deque([random.choice(oper_set) for _ in range(1, len(args))])
-    stack = deque()
-    while nums:
-        if len(stack) < 2 or random.randint(0, 1):
-            expr.append(nums.pop())
-            stack.append(None)
+    term_counter = deque()
+    while terms:
+        if len(term_counter) < 2 or random.randint(0, 1):
+            expr.append(terms.pop())
+            term_counter.append(None)
         else:
             expr.append(opers.pop())
-            stack.pop()
+            term_counter.pop()
     expr.extend(opers)
     return expr
 
 def calc_expr(expr, oper_set):
-    stack = deque()
+    terms = deque()
     for elem in expr:
         if elem not in oper_set:
-            stack.append(Fraction(int(elem), 1))
-        elif elem == "/" and stack[-1] == 0:
+            terms.append(Fraction(int(elem), 1))
+        elif elem == "/" and terms[-1] == 0:
             return None
         else:
-            x, y = stack.pop(), stack.pop()
-            stack.append(oper_set[elem](y, x))
-    return stack.pop()
+            x, y = terms.pop(), terms.pop()
+            terms.append(oper_set[elem](y, x))
+    return terms.pop()
 
 def gen(args):
     oper_set = {
